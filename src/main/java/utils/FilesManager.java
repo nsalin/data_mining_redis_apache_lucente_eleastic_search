@@ -104,13 +104,15 @@ public class FilesManager {
         return folders;
     }
 
-    public List<String> getFileContent(File directoryName) throws IOException {
+    public List<String> getFileContentWithLucene(File directoryName) throws IOException {
         List<String> words = new ArrayList<>();
+        Analyzer tokenizer = new StandardAnalyzer();
         for(File file : directoryName.listFiles()){
-            String[] wordSplit = parseFile(file).toString().replaceAll("[^ a-zA-Z0-9]+","").split("\\W+");
-            for(String word : wordSplit){
-                words.add(word);
-
+            StringReader reader = new StringReader(parseFile(file).toString());
+            TokenStream stream  = tokenizer.tokenStream("", reader);
+            stream.reset();
+            while(stream.incrementToken()) {
+                words.add(stream.getAttribute(CharTermAttribute.class).toString());
             }
         }
         return words;

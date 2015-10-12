@@ -56,10 +56,10 @@ public class IndexElements {
         //index in ES negative/positive -> document -> list of words
         for (Map.Entry<File, List<File>> entry : directories.entrySet()){
             if(entry.getKey().toString().contains("neg")){
-                esConnection.createIndexFromFolderForFilesAndWords("negative", "review", entry.getKey().toString(), entry.getValue(), filesManager.getFileContent(entry.getKey()));
+                esConnection.createIndexFromFolderForFilesAndWords("negative", "review", entry.getKey().toString(), entry.getValue(), filesManager.getFileContentWithLucene(entry.getKey()));
             }
             else {
-                esConnection.createIndexFromFolderForFilesAndWords("positive", "review", entry.getKey().toString(), entry.getValue(), filesManager.getFileContent(entry.getKey()));
+                esConnection.createIndexFromFolderForFilesAndWords("positive", "review", entry.getKey().toString(), entry.getValue(), filesManager.getFileContentWithLucene(entry.getKey()));
             }
         }
     }
